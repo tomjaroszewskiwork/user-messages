@@ -6,13 +6,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import org.springframework.stereotype.Component;
 
@@ -55,11 +59,12 @@ public class UserMessagesApi {
 	}
 
 	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userId}/messages/")
 	@ApiOperation(value = "Adds a message for the user", response = UserMessageEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 400, message = "Message too long or null") })
-	public Response addMessage(
+	public Response addMessage(@Context UriInfo uriInfo,
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
 			@ApiParam(value = "New message") MessageFormatter newMessage) {
 		// Validates the message
@@ -74,7 +79,11 @@ public class UserMessagesApi {
 		message.setUserId(userId);
 		messageStore.persist(message);
 		messageStore.flush();
-		return Response.ok(message).build();
+
+		Long messageId = message.getMessageId();
+		UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+		builder.path(Long.toString(messageId));
+		return Response.created(builder.build()).build();
 	}
 
 }
