@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -49,12 +50,7 @@ public class UserMessagesApi {
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
 			@ApiParam(value = "Message id", example = "3434523", required = true) @PathParam("messageId") final Long messageId) {
 
-		UserMessageEntity message = messageStore.find(UserMessageEntity.class, messageId);
-		// Checks null or user not matching
-		if (message == null || !message.getUserId().equals(userId)) {
-			throw new ClientErrorException("No message found with id={" + messageId + "} for the given user",
-					Response.Status.NOT_FOUND);
-		}
+		UserMessageEntity message = getMessageEntity(userId, messageId);
 		return Response.ok(message).build();
 	}
 
@@ -73,6 +69,8 @@ public class UserMessagesApi {
 					"Message cannot be null or larger then " + MESSAGE_SIZE_LIMIT + " characters",
 					Response.Status.BAD_REQUEST);
 		}
+
+		// Adds it to the database
 		UserMessageEntity message = new UserMessageEntity();
 		message.setMessage(newMessage.getMessage());
 		message.setGeneratedAt(new Date());
@@ -80,10 +78,38 @@ public class UserMessagesApi {
 		messageStore.persist(message);
 		messageStore.flush();
 
+		// Returns location
 		Long messageId = message.getMessageId();
 		UriBuilder builder = uriInfo.getAbsolutePathBuilder();
 		builder.path(Long.toString(messageId));
 		return Response.created(builder.build()).build();
+	}
+
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{userId}/messages/{messageId}")
+	@ApiOperation(value = "Removes the message", response = UserMessageEntity.class)
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
+	public Response removeMessage(
+			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
+			@ApiParam(value = "Message id", example = "3434523", required = true) @PathParam("messageId") final Long messageId) {
+
+		UserMessageEntity message = getMessageEntity(userId, messageId);
+
+		messageStore.remove(message);
+		messageStore.flush();
+
+		return Response.status(Response.Status.NO_CONTENT).build();
+	}
+
+	private UserMessageEntity getMessageEntity(String userId, Long messageId) {
+		UserMessageEntity message = messageStore.find(UserMessageEntity.class, messageId);
+		// Checks null or user not matching
+		if (message == null || !message.getUserId().equals(userId)) {
+			throw new ClientErrorException("No message found with id={" + messageId + "} for the given user",
+					Response.Status.NOT_FOUND);
+		}
+		return message;
 	}
 
 }
