@@ -6,10 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "message")
+@Table(name = "message", indexes = {
+        @Index(columnList = "userId")
+})
 public class UserMessageEntity {
 	private Long messageId;
 	private String userId;
