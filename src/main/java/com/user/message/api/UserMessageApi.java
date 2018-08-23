@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
 @Produces(MediaType.APPLICATION_JSON)
 @Component
 @Path("users/")
-public class UserMessagesApi {
+public class UserMessageApi {
 	@PersistenceContext
 	private EntityManager messageStore;
 
@@ -90,7 +90,7 @@ public class UserMessagesApi {
 	@Path("{userId}/messages/{messageId}")
 	@ApiOperation(value = "Removes the message", response = UserMessageEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
-	public Response removeMessage(
+	public Response deleteMessage(
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
 			@ApiParam(value = "Message id", example = "3434523", required = true) @PathParam("messageId") final Long messageId) {
 

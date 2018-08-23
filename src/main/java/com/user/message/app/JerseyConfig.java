@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.user.message.api.UserMessagesApi;
+import com.user.message.api.UserMessageApi;
 import com.user.message.exception.ApiExceptionMapper;
 
 /**
@@ -21,7 +21,7 @@ public class JerseyConfig extends ResourceConfig {
 	@Autowired
 	public JerseyConfig(ObjectMapper objectMapper) {
 		// Registers all of the API, otherwise wont be wired
-		register(UserMessagesApi.class);
+		register(UserMessageApi.class);
 		register(ApiExceptionMapper.class);
 	}
 }
