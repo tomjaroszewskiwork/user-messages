@@ -25,17 +25,19 @@ import com.leandronunes85.etag.ETag;
 import com.user.message.store.UserMessageEntity;
 import com.user.message.store.UserMessageRepo;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * Handles user messages
+ * Handles storing and retrieving user messages
  */
 @Produces(MediaType.APPLICATION_JSON)
 @Component
 @Path("v1/users/")
+@Api(tags = "user message")
 public class UserMessageApi {
 
 	@Autowired
@@ -61,12 +63,12 @@ public class UserMessageApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userId}/messages/")
-	@ApiOperation(value = "Returns a list of user messages, sorted by generation date", response = UserMessageList.class)
+	@ApiOperation(value = "Returns a paginated list of user messages, sorted by generation date", response = UserMessageList.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
 	@ETag
 	public Response getMessageList(
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
-			@ApiParam(value = "Page", allowableValues = "range[1,]") @DefaultValue("0") @QueryParam("page") final Integer page,
+			@ApiParam(value = "Which page", allowableValues = "range[1,infinity]") @DefaultValue("0") @QueryParam("page") final Integer page,
 			@ApiParam(value = "Page size", allowableValues = "range[1,100]") @DefaultValue("50") @QueryParam("size") final Integer size) {
 
 		// Validates page size and page limit
@@ -131,7 +133,7 @@ public class UserMessageApi {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userId}/messages/{messageId}")
-	@ApiOperation(value = "Removes the message", response = UserMessageEntity.class)
+	@ApiOperation(value = "Deletes a users message", response = UserMessageEntity.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
 	public Response deleteMessage(
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,

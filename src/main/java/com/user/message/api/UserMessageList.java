@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.user.message.store.UserMessageEntity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "UserMessageList", description = "A list of user messages")
 public class UserMessageList {
 
 	private List<UserMessageEntity> messages;
@@ -14,10 +18,12 @@ public class UserMessageList {
 		this.hasMore = hasMore;
 	}
 
+	@ApiModelProperty(value = "List of user messages")
 	public List<UserMessageEntity> getMessages() {
 		return messages;
 	}
 
+	@ApiModelProperty(value = "If there are more messages for the user to pull")
 	public boolean getHasMore() {
 		return hasMore;
 	}

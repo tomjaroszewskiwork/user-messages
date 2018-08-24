@@ -1,0 +1,278 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "API for storing and retrieving messages for a user",
+    "version" : "v1",
+    "title" : "User Messages",
+    "contact" : {
+      "name" : "usermessagesupport@bestcompany.com"
+    }
+  },
+  "tags" : [ {
+    "name" : "user message"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/v1/users/{userId}/messages" : {
+      "get" : {
+        "tags" : [ "user message" ],
+        "summary" : "Returns a paginated list of user messages, sorted by generation date",
+        "description" : "",
+        "operationId" : "getMessageList",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "bob.dole"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Which page",
+          "required" : false,
+          "type" : "integer",
+          "default" : 0,
+          "minimum" : 1,
+          "format" : "int32"
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "Page size",
+          "required" : false,
+          "type" : "integer",
+          "default" : 50,
+          "maximum" : 100,
+          "minimum" : 1,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/UserMessageList"
+            }
+          },
+          "404" : {
+            "description" : "Message not found"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "user message" ],
+        "summary" : "Adds a message for the user",
+        "description" : "",
+        "operationId" : "addMessage",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "bob.dole"
+        }, {
+          "in" : "body",
+          "name" : "body",
+          "description" : "New message",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/MessageBody"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/UserMessage"
+            }
+          },
+          "400" : {
+            "description" : "Message too long or null"
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/messages/{messageId}" : {
+      "get" : {
+        "tags" : [ "user message" ],
+        "summary" : "Returns a users message",
+        "description" : "",
+        "operationId" : "getMessage",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "bob.dole"
+        }, {
+          "name" : "messageId",
+          "in" : "path",
+          "description" : "Message id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 3434523
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/UserMessage"
+            }
+          },
+          "404" : {
+            "description" : "Message not found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "user message" ],
+        "summary" : "Deletes a users message",
+        "description" : "",
+        "operationId" : "deleteMessage",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "bob.dole"
+        }, {
+          "name" : "messageId",
+          "in" : "path",
+          "description" : "Message id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 3434523
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/UserMessage"
+            }
+          },
+          "404" : {
+            "description" : "Message not found"
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/messages/{messageId}/fun-facts" : {
+      "get" : {
+        "tags" : [ "user message" ],
+        "summary" : "Returns a fun facts about a message",
+        "description" : "",
+        "operationId" : "getFunFacts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "User id",
+          "required" : true,
+          "type" : "string",
+          "x-example" : "bob.dole"
+        }, {
+          "name" : "messageId",
+          "in" : "path",
+          "description" : "Message id",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int64",
+          "x-example" : 3434523
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/FunFacts"
+            }
+          },
+          "404" : {
+            "description" : "Message not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "FunFacts" : {
+      "type" : "object",
+      "properties" : {
+        "exciting" : {
+          "type" : "boolean",
+          "description" : "Does the message have exciting content"
+        },
+        "palindrome" : {
+          "type" : "boolean",
+          "description" : "Is the message an paldindrome"
+        },
+        "sad" : {
+          "type" : "boolean",
+          "description" : "Does the message have sad content"
+        }
+      },
+      "description" : "Fun facts about a users message"
+    },
+    "MessageBody" : {
+      "type" : "object",
+      "properties" : {
+        "message" : {
+          "type" : "string",
+          "description" : "The new message to be stored"
+        }
+      },
+      "description" : "Passed in when creating a new message"
+    },
+    "UserMessage" : {
+      "type" : "object",
+      "properties" : {
+        "generatedAt" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The time the message was stored at"
+        },
+        "message" : {
+          "type" : "string",
+          "example" : "Important details, see message",
+          "description" : "Message content"
+        },
+        "messageId" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Message id"
+        },
+        "userId" : {
+          "type" : "string",
+          "example" : "bob.dole",
+          "description" : "User id"
+        }
+      },
+      "description" : "A message for a user"
+    },
+    "UserMessageList" : {
+      "type" : "object",
+      "properties" : {
+        "hasMore" : {
+          "type" : "boolean",
+          "description" : "If there are more messages for the user to pull"
+        },
+        "messages" : {
+          "type" : "array",
+          "description" : "List of user messages",
+          "items" : {
+            "$ref" : "#/definitions/UserMessage"
+          }
+        }
+      },
+      "description" : "A list of user messages"
+    }
+  }
+}

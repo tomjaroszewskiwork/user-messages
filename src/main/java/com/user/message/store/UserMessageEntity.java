@@ -9,10 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
-@Table(name = "message", indexes = {
-        @Index(columnList = "userId")
-})
+@Table(name = "message", indexes = { @Index(columnList = "userId") })
+@ApiModel(value = "UserMessage", description = "A message for a user")
 public class UserMessageEntity {
 	private Long messageId;
 	private String userId;
@@ -21,6 +23,7 @@ public class UserMessageEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@ApiModelProperty(value = "Message id")
 	public Long getMessageId() {
 		return messageId;
 	}
@@ -29,6 +32,7 @@ public class UserMessageEntity {
 		this.messageId = messageId;
 	}
 
+	@ApiModelProperty(value = "User id", example = "bob.dole")
 	public String getUserId() {
 		return userId;
 	}
@@ -37,6 +41,7 @@ public class UserMessageEntity {
 		this.userId = userId;
 	}
 
+	@ApiModelProperty(value = "Message content", example = "Important details, see message")
 	public String getMessage() {
 		return message;
 	}
@@ -45,6 +50,7 @@ public class UserMessageEntity {
 		this.message = message;
 	}
 
+	@ApiModelProperty(value = "The time the message was stored at")
 	public Date getGeneratedAt() {
 		return generatedAt;
 	}
