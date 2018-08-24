@@ -90,6 +90,18 @@ public class UserMessageApi {
 		return Response.ok(userMessages).build();
 	}
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{userId}/messages/{messageId}/fun-facts")
+	@ApiOperation(value = "Returns a fun facts about a message", response = FunFactsFormatter.class)
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
+	public Response getFunFacts(
+			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
+			@ApiParam(value = "Message id", example = "3434523", required = true) @PathParam("messageId") final Long messageId) {
+		UserMessageEntity message = getMessageEntity(userId, messageId);
+		return Response.ok(new FunFactsFormatter(message)).build();
+	}
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

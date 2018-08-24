@@ -99,4 +99,23 @@ public class UserMessageApiTest extends ApiTest {
 		assertURLEquals(HttpMethod.DELETE, "/users/bob.dole/messages/200", 204);
 		assertURLEquals(HttpMethod.GET, "/users/bob.dole/messages/200", 404);
 	}
+
+	/**
+	 * Tests for bad fun facts
+	 */
+	@Test
+	public void getFunFactsBadTest() {
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/1/fun-facts", 404);
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/notInteger/fun-facts", 400);
+	}
+
+	/**
+	 * Tests for getting fun facts
+	 */
+	@Test
+	public void getFunFactsTest() {
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/150/fun-facts", 200, "sad-facts");
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/151/fun-facts", 200, "exciting-facts");
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/152/fun-facts", 200, "palindrome-facts");
+	}
 }
