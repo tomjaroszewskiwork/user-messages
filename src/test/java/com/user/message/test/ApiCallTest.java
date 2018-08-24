@@ -9,6 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,7 +19,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class ApiCallTest {
 	private static final TestRestTemplate restTemplate = new TestRestTemplate();
-	private int port; 
+	private int port;
 	private String fixtureFolder;
 
 	/**
@@ -42,14 +43,15 @@ public class ApiCallTest {
 	 * @param expectedFile
 	 * @return resonse entity
 	 */
-	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, int expectedCode, String expectedFile) {
+	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, int expectedCode,
+			String expectedFile) {
 		return assertURLEquals(method, url, null, expectedCode, expectedFile, JSONCompareMode.STRICT_ORDER);
 	}
 
 	/**
 	 * Calls the URL.
 	 * 
-	 * Tests the HTTP code of the API. Usedful for error testing.
+	 * Tests the HTTP code of the API. Useful for error testing.
 	 * 
 	 * @param url
 	 * @param expectedCode
@@ -57,6 +59,13 @@ public class ApiCallTest {
 	 */
 	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, int expectedCode) {
 		return assertURLEquals(method, url, null, expectedCode, null, JSONCompareMode.STRICT_ORDER);
+	}
+
+	/**
+	 * Calls the URL with a body
+	 */
+	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, String body, int expectedCode) {
+		return assertURLEquals(method, url, body, expectedCode, null, JSONCompareMode.STRICT);
 	}
 
 	/**
@@ -72,10 +81,11 @@ public class ApiCallTest {
 	 * @param compareMode
 	 * @return response entity
 	 */
-	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, String body, int expectedCode, String expectedFile,
-			JSONCompareMode compareMode) {
+	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, String body, int expectedCode,
+			String expectedFile, JSONCompareMode compareMode) {
 
 		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
 		HttpEntity<String> entity = new HttpEntity<String>(body, headers);
 		String urlWithPort = "http://localhost:" + port + url;
 		ResponseEntity<String> response = restTemplate.exchange(urlWithPort, method, entity, String.class);
