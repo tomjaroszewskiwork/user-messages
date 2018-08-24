@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan("com.user.message")
-@EntityScan("com.user.message.entity")
+@EntityScan("com.user.message.store")
 public class UserMessagesApp {
 
 	/**

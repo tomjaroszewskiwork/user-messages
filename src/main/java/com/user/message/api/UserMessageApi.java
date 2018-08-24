@@ -1,12 +1,7 @@
 package com.user.message.api;
 
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -23,9 +18,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.user.message.entity.UserMessageEntity;
+import com.user.message.store.UserMessageEntity;
+import com.user.message.store.UserMessageRepo;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,16 +32,18 @@ import io.swagger.annotations.ApiResponses;
 /**
  * Handles user messages
  */
-@Transactional
 @Produces(MediaType.APPLICATION_JSON)
 @Component
 @Path("users/")
 public class UserMessageApi {
 
-	@PersistenceContext
-	private EntityManager messageStore;
+	@Autowired
+	UserMessageRepo messageRepo;
 
-	private final int MESSAGE_SIZE_LIMIT = 2000;
+	/**
+	 * Message size limit, twice as good as twitter
+	 */
+	public static final int MESSAGE_SIZE_LIMIT = 560;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -77,16 +76,7 @@ public class UserMessageApi {
 			throw new ClientErrorException("size must be between 1 and 100", Response.Status.BAD_REQUEST);
 		}
 
-		int offsetStart = page * size;
-		int offsetEnd = (page + 1) * size;
-		TypedQuery<UserMessageEntity> query = messageStore.createQuery(
-				"SELECT m FROM UserMessageEntity m WHERE m.userId = :userId ORDER BY m.generatedAt DESC",
-				UserMessageEntity.class);
-		query.setParameter("userId", userId);
-		query.setFirstResult(offsetStart);
-		query.setMaxResults(offsetEnd);
-		List<UserMessageEntity> userMessages = query.getResultList();
-
+		List<UserMessageEntity> userMessages = messageRepo.getMessagesForUser(userId, page, size);
 		return Response.ok(userMessages).build();
 	}
 
@@ -121,12 +111,7 @@ public class UserMessageApi {
 		}
 
 		// Adds it to the database
-		UserMessageEntity message = new UserMessageEntity();
-		message.setMessage(newMessage.getMessage());
-		message.setGeneratedAt(new Date());
-		message.setUserId(userId);
-		messageStore.persist(message);
-		messageStore.flush();
+		UserMessageEntity message = messageRepo.addMessage(userId, newMessage.getMessage());
 
 		// Returns location
 		Long messageId = message.getMessageId();
@@ -144,22 +129,20 @@ public class UserMessageApi {
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
 			@ApiParam(value = "Message id", example = "3434523", required = true) @PathParam("messageId") final Long messageId) {
 
-		UserMessageEntity message = getMessageEntity(userId, messageId);
-
-		messageStore.remove(message);
-		messageStore.flush();
-
+		UserMessageEntity message = messageRepo.deleteMessage(userId, messageId);
+		if (message == null) {
+			throw new ClientErrorException("No message found with id={" + messageId + "} for the given user",
+					Response.Status.NOT_FOUND);
+		}
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 
-	private UserMessageEntity getMessageEntity(String userId, Long messageId) {
-		UserMessageEntity message = messageStore.find(UserMessageEntity.class, messageId);
-		// Checks null or user not matching
-		if (message == null || !message.getUserId().equals(userId)) {
+	private UserMessageEntity getMessageEntity(String expectedUserId, Long messageId) {
+		UserMessageEntity message = messageRepo.getMessage(expectedUserId, messageId);
+		if (message == null) {
 			throw new ClientErrorException("No message found with id={" + messageId + "} for the given user",
 					Response.Status.NOT_FOUND);
 		}
 		return message;
 	}
-
 }

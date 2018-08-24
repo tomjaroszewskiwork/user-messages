@@ -23,6 +23,8 @@ public class UserMessageApiTest extends ApiTest {
 		assertURLEquals(HttpMethod.GET, "/users/test/messages/notInteger", 400);
 		assertURLEquals(HttpMethod.GET, "/users/test/messages/-1", 404);
 		assertURLEquals(HttpMethod.GET, "/users/test/messages/page=-1", 400);
+		// Message does not belong to fun.dude
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/100", 404);
 	}
 
 	/**
@@ -89,6 +91,8 @@ public class UserMessageApiTest extends ApiTest {
 	@Test
 	public void deleteMessageNotFound() {
 		assertURLEquals(HttpMethod.DELETE, "/users/test/messages/1", null, 404);
+		// Message does not belong to fun.dude
+		assertURLEquals(HttpMethod.DELETE, "/users/fun.dude/messages/100", null, 404);
 	}
 
 	/**
@@ -107,6 +111,8 @@ public class UserMessageApiTest extends ApiTest {
 	public void getFunFactsBadTest() {
 		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/1/fun-facts", 404);
 		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/notInteger/fun-facts", 400);
+		// Message does not belong to fun.dude
+		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/100/fun-facts", 404);
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package com.user.message.entity;
+package com.user.message.store;
 
 import java.util.Date;
 

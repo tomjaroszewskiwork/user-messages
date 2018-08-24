@@ -1,6 +1,6 @@
 package com.user.message.api;
 
-import com.user.message.entity.UserMessageEntity;
+import com.user.message.store.UserMessageEntity;
 
 /**
  * Formatter for fun facts, like if the message is a palindrome
