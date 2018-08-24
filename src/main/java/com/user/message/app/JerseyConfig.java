@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leandronunes85.etag.responsefilter.ETagResponseFilter;
 import com.user.message.api.UserMessageApi;
 import com.user.message.exception.ApiExceptionMapper;
 
@@ -23,5 +24,7 @@ public class JerseyConfig extends ResourceConfig {
 		// Registers all of the API, otherwise wont be wired
 		register(UserMessageApi.class);
 		register(ApiExceptionMapper.class);
+
+		register(new ETagResponseFilter());
 	}
 }

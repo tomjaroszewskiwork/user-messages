@@ -21,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.leandronunes85.etag.ETag;
 import com.user.message.store.UserMessageEntity;
 import com.user.message.store.UserMessageRepo;
 
@@ -60,9 +61,9 @@ public class UserMessageApi {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userId}/messages/")
-	// TODO response type needs to be array, should I add prev/next?
-	@ApiOperation(value = "Returns a list of user messages, sorted by generation date", response = UserMessageEntity.class)
+	@ApiOperation(value = "Returns a list of user messages, sorted by generation date", response = UserMessageList.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
+	@ETag
 	public Response getMessageList(
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,
 			@ApiParam(value = "Page", allowableValues = "range[1,]") @DefaultValue("0") @QueryParam("page") final Integer page,
