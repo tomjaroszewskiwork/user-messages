@@ -76,8 +76,15 @@ public class UserMessageApi {
 			throw new ClientErrorException("size must be between 1 and 100", Response.Status.BAD_REQUEST);
 		}
 
-		List<UserMessageEntity> userMessages = messageRepo.getMessagesForUser(userId, page, size);
-		return Response.ok(userMessages).build();
+		// Gets one more extra entity to check if we have more messages
+		List<UserMessageEntity> userMessages = messageRepo.getMessagesForUser(userId, page, size, 1);
+		boolean hasMore = false;
+		if (userMessages.size() == size + 1) {
+			hasMore = true;
+			userMessages = userMessages.subList(0, size);
+		}
+
+		return Response.ok(new UserMessageList(userMessages, hasMore)).build();
 	}
 
 	@GET

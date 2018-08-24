@@ -1,26 +1,29 @@
-[
-	{
-		"messageId": 105,
-		"userId": "tom.j",
-		"message": "ldsfsdfsdf test test este stest",
-		"generatedAt": "2018-10-12T01:08:09.000+0000"
-	},
-	{
-		"messageId": 104,
-		"userId": "tom.j",
-		"message": "longgest message possible",
-		"generatedAt": "2018-10-12T00:08:09.000+0000"
-	},
-	{
-		"messageId": 103,
-		"userId": "tom.j",
-		"message": "even more words",
-		"generatedAt": "2018-10-11T00:08:09.000+0000"
-	},
-	{
-		"messageId": 102,
-		"userId": "tom.j",
-		"message": "longer message filled with words",
-		"generatedAt": "2018-10-10T00:08:09.000+0000"
-	}
-]
+{
+	"messages": [
+		{
+			"messageId": 105,
+			"userId": "tom.j",
+			"message": "ldsfsdfsdf test test este stest",
+			"generatedAt": "2018-10-12T01:08:09.000+0000"
+		},
+		{
+			"messageId": 104,
+			"userId": "tom.j",
+			"message": "longgest message possible",
+			"generatedAt": "2018-10-12T00:08:09.000+0000"
+		},
+		{
+			"messageId": 103,
+			"userId": "tom.j",
+			"message": "even more words",
+			"generatedAt": "2018-10-11T00:08:09.000+0000"
+		},
+		{
+			"messageId": 102,
+			"userId": "tom.j",
+			"message": "longer message filled with words",
+			"generatedAt": "2018-10-10T00:08:09.000+0000"
+		}
+	],
+	"hasMore": true
+}
