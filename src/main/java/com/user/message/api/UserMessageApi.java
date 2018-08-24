@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
  */
 @Produces(MediaType.APPLICATION_JSON)
 @Component
-@Path("users/")
+@Path("v1/users/")
 public class UserMessageApi {
 
 	@Autowired

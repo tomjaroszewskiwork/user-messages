@@ -19,12 +19,12 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getMessageBadTest() {
-		assertURLEquals(HttpMethod.GET, "/users/test/messages/1", 404);
-		assertURLEquals(HttpMethod.GET, "/users/test/messages/notInteger", 400);
-		assertURLEquals(HttpMethod.GET, "/users/test/messages/-1", 404);
-		assertURLEquals(HttpMethod.GET, "/users/test/messages/page=-1", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/test/messages/1", 404);
+		assertURLEquals(HttpMethod.GET, "/v1/users/test/messages/notInteger", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/test/messages/-1", 404);
+		assertURLEquals(HttpMethod.GET, "/v1/users/test/messages/page=-1", 400);
 		// Message does not belong to fun.dude
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/100", 404);
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/100", 404);
 	}
 
 	/**
@@ -32,7 +32,7 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getMessageTest() {
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/100", 200, "message");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/100", 200, "message");
 	}
 
 	/**
@@ -40,9 +40,9 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getMessageListBadTest() {
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/page=-1", 400);
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/size=0", 400);
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/size=101", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/page=-1", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/size=0", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/size=101", 400);
 	}
 
 	/**
@@ -50,11 +50,11 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getMessageListTest() {
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/", 200, "all-messages");
-		assertURLEquals(HttpMethod.GET, "/users/new.user/messages/", 200, "empty-list");
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages?page=100", 200, "empty-list");
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages?size=4", 200, "partial-list-start");
-		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages?size=1&page=5", 200, "partial-list-end");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/", 200, "all-messages");
+		assertURLEquals(HttpMethod.GET, "/v1/users/new.user/messages/", 200, "empty-list");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?page=100", 200, "empty-list");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=4", 200, "partial-list-start");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=1&page=5", 200, "partial-list-end");
 	}
 
 	/**
@@ -62,11 +62,11 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void addMessageBadTest() throws Exception {
-		assertURLEquals(HttpMethod.POST, "/users/test/messages/", 400);
-		assertURLEquals(HttpMethod.POST, "/users/test/messages/", "", 400);
+		assertURLEquals(HttpMethod.POST, "/v1/users/test/messages/", 400);
+		assertURLEquals(HttpMethod.POST, "/v1/users/test/messages/", "", 400);
 		MessageBodyFormatter badMessage = new MessageBodyFormatter();
 		String body = mapper.writeValueAsString(badMessage);
-		assertURLEquals(HttpMethod.POST, "/users/test/messages/", body, 400);
+		assertURLEquals(HttpMethod.POST, "/v1/users/test/messages/", body, 400);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class UserMessageApiTest extends ApiTest {
 		MessageBodyFormatter newMessage = new MessageBodyFormatter();
 		newMessage.setMessage("new test value!");
 		String body = mapper.writeValueAsString(newMessage);
-		ResponseEntity<String> response = assertURLEquals(HttpMethod.POST, "/users/test/messages/", body, 201);
+		ResponseEntity<String> response = assertURLEquals(HttpMethod.POST, "/v1/users/test/messages/", body, 201);
 		// Location header needs to point to newly created resource
 		String newLocation = response.getHeaders().get("Location").get(0);
 		// Strips out the front part of the URL
@@ -90,9 +90,9 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void deleteMessageNotFound() {
-		assertURLEquals(HttpMethod.DELETE, "/users/test/messages/1", null, 404);
+		assertURLEquals(HttpMethod.DELETE, "/v1/users/test/messages/1", null, 404);
 		// Message does not belong to fun.dude
-		assertURLEquals(HttpMethod.DELETE, "/users/fun.dude/messages/100", null, 404);
+		assertURLEquals(HttpMethod.DELETE, "/v1/users/fun.dude/messages/100", null, 404);
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void deleteMessageTest() {
-		assertURLEquals(HttpMethod.DELETE, "/users/bob.dole/messages/200", 204);
-		assertURLEquals(HttpMethod.GET, "/users/bob.dole/messages/200", 404);
+		assertURLEquals(HttpMethod.DELETE, "/v1/users/bob.dole/messages/200", 204);
+		assertURLEquals(HttpMethod.GET, "/v1/users/bob.dole/messages/200", 404);
 	}
 
 	/**
@@ -109,10 +109,10 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getFunFactsBadTest() {
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/1/fun-facts", 404);
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/notInteger/fun-facts", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/1/fun-facts", 404);
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/notInteger/fun-facts", 400);
 		// Message does not belong to fun.dude
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/100/fun-facts", 404);
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/100/fun-facts", 404);
 	}
 
 	/**
@@ -120,8 +120,8 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getFunFactsTest() {
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/150/fun-facts", 200, "sad-facts");
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/151/fun-facts", 200, "exciting-facts");
-		assertURLEquals(HttpMethod.GET, "/users/fun.dude/messages/152/fun-facts", 200, "palindrome-facts");
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/150/fun-facts", 200, "sad-facts");
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/151/fun-facts", 200, "exciting-facts");
+		assertURLEquals(HttpMethod.GET, "/v1/users/fun.dude/messages/152/fun-facts", 200, "palindrome-facts");
 	}
 }
