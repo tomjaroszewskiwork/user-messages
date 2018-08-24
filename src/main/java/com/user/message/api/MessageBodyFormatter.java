@@ -3,7 +3,7 @@ package com.user.message.api;
 /**
  * Message wrapper for the POST body
  */
-public class MessageFormatter {
+public class MessageBodyFormatter {
 
 	private String message;
 

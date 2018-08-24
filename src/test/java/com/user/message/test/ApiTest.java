@@ -9,7 +9,6 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.user.message.app.UserMessagesApp;
 
@@ -19,7 +18,6 @@ import com.user.message.app.UserMessagesApp;
 @Ignore
 @RunWith(SpringRunner.class)
 @ContextConfiguration
-@Transactional
 @SpringBootTest(classes = UserMessagesApp.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestPropertySource(locations = "classpath:test.properties")
 public class ApiTest extends ApiCallTest {

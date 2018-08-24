@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.glassfish.jersey.server.ParamException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,15 @@ public class ApiExceptionMapper implements ExceptionMapper<Throwable> {
 		// Handles client errors
 		if (ex instanceof ClientErrorException) {
 			ClientErrorException clientError = (ClientErrorException) ex;
+			return Response.status(clientError.getResponse().getStatus()).entity(new ErrorMessage(clientError)).build();
+		} else if (ex instanceof ParamException) {
+			// Gives a better message when parameter parsing goes wrong
+			String message = ex.getMessage();
+			if (ex.getCause() != null) {
+				Throwable throwable = ex.getCause();
+				message = throwable.getCause().getMessage();
+			}
+			ClientErrorException clientError = new ClientErrorException(message, Response.Status.BAD_REQUEST);
 			return Response.status(clientError.getResponse().getStatus()).entity(new ErrorMessage(clientError)).build();
 		} else {
 			// Otherwise it's a internal error, need to log

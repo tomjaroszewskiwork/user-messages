@@ -12,19 +12,17 @@ import com.user.message.test.ApiTest;
  */
 public class UserMessageApiTest extends ApiTest {
 
-	private class MessageBody {
-		@SuppressWarnings("unused")
-		public String message;
-	}
-
 	private ObjectMapper mapper = new ObjectMapper();
 
 	/**
-	 * Tests message not found
+	 * Tests for bad message pulling
 	 */
 	@Test
-	public void getMessageNotFoundTest() {
+	public void getMessageBadTest() {
 		assertURLEquals(HttpMethod.GET, "/users/test/messages/1", 404);
+		assertURLEquals(HttpMethod.GET, "/users/test/messages/notInteger", 400);
+		assertURLEquals(HttpMethod.GET, "/users/test/messages/-1", 404);
+		assertURLEquals(HttpMethod.GET, "/users/test/messages/page=-1", 400);
 	}
 
 	/**
@@ -36,13 +34,35 @@ public class UserMessageApiTest extends ApiTest {
 	}
 
 	/**
+	 * Tests for bad message list
+	 */
+	@Test
+	public void getMessageListBadTest() {
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/page=-1", 400);
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/size=0", 400);
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/size=101", 400);
+	}
+
+	/**
+	 * Tests for pulling message list
+	 */
+	@Test
+	public void getMessageListTest() {
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages/", 200, "all-messages");
+		assertURLEquals(HttpMethod.GET, "/users/new.user/messages/", 200, "empty-list");
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages?page=100", 200, "empty-list");
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages?size=4", 200, "partial-list-start");
+		assertURLEquals(HttpMethod.GET, "/users/tom.j/messages?size=1&page=5", 200, "partial-list-end");
+	}
+
+	/**
 	 * Tests adding a message with no body
 	 */
 	@Test
 	public void addMessageBadTest() throws Exception {
 		assertURLEquals(HttpMethod.POST, "/users/test/messages/", 400);
 		assertURLEquals(HttpMethod.POST, "/users/test/messages/", "", 400);
-		MessageBody badMessage = new MessageBody();
+		MessageBodyFormatter badMessage = new MessageBodyFormatter();
 		String body = mapper.writeValueAsString(badMessage);
 		assertURLEquals(HttpMethod.POST, "/users/test/messages/", body, 400);
 	}
@@ -52,8 +72,8 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void addMessageTest() throws Exception {
-		MessageBody newMessage = new MessageBody();
-		newMessage.message = "new test value!";
+		MessageBodyFormatter newMessage = new MessageBodyFormatter();
+		newMessage.setMessage("new test value!");
 		String body = mapper.writeValueAsString(newMessage);
 		ResponseEntity<String> response = assertURLEquals(HttpMethod.POST, "/users/test/messages/", body, 201);
 		// Location header needs to point to newly created resource
@@ -76,7 +96,7 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void deleteMessageTest() {
-		assertURLEquals(HttpMethod.DELETE, "/users/tom.j/messages/100", 204);
-		assertURLEquals(HttpMethod.GET, "/users/test/messages/100", 404);
+		assertURLEquals(HttpMethod.DELETE, "/users/bob.dole/messages/200", 204);
+		assertURLEquals(HttpMethod.GET, "/users/bob.dole/messages/200", 404);
 	}
 }
