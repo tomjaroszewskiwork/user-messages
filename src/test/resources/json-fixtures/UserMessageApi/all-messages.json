@@ -4,37 +4,37 @@
 			"messageId": 105,
 			"userId": "tom.j",
 			"message": "ldsfsdfsdf test test este stest",
-			"generatedAt": "2018-10-12T01:08:09.000+0000"
+			"generatedAt": "2018-10-11T21:08:09.000+0000"
 		},
 		{
 			"messageId": 104,
 			"userId": "tom.j",
 			"message": "longgest message possible",
-			"generatedAt": "2018-10-12T00:08:09.000+0000"
+			"generatedAt": "2018-10-11T20:08:09.000+0000"
 		},
 		{
 			"messageId": 103,
 			"userId": "tom.j",
 			"message": "even more words",
-			"generatedAt": "2018-10-11T00:08:09.000+0000"
+			"generatedAt": "2018-10-10T20:08:09.000+0000"
 		},
 		{
 			"messageId": 102,
 			"userId": "tom.j",
 			"message": "longer message filled with words",
-			"generatedAt": "2018-10-10T00:08:09.000+0000"
+			"generatedAt": "2018-10-09T20:08:09.000+0000"
 		},
 		{
 			"messageId": 101,
 			"userId": "tom.j",
 			"message": "lool",
-			"generatedAt": "2018-08-09T00:08:09.000+0000"
+			"generatedAt": "2018-08-08T20:08:09.000+0000"
 		},
 		{
 			"messageId": 100,
 			"userId": "tom.j",
 			"message": "test string",
-			"generatedAt": "2018-08-09T00:08:08.000+0000"
+			"generatedAt": "2018-08-08T20:08:08.000+0000"
 		}
 	],
 	"hasMore": false
