@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiResponses;
  */
 @Produces(MediaType.APPLICATION_JSON)
 @Component
-@Path("v1/users/")
+@Path("v2/users/")
 @Api(tags = "user message")
 public class UserMessageApi {
 
