@@ -40,9 +40,10 @@ public class UserMessageApiTest extends ApiTest {
 	 */
 	@Test
 	public void getMessageListBadTest() {
-		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/page=-1", 400);
-		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/size=0", 400);
-		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/size=101", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?page=-1", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=-1", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=101", 400);
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=aaa", 400);
 	}
 
 	/**
