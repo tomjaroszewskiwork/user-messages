@@ -6,19 +6,27 @@
 
 Get JDK 1.8
 
+```bash
 ./gradlew build
+```
 
 ## To run jar
 
+```bash
 java -jar ./build/libs/user-messages-1.0.0
+```
 
 ## To build docker image
 
+```bash
 ./gradlew build docker
+```
 
 ## To run docker image
 
+```bash
 docker run -p 8080:8080 user-messages
+```
 
 ## API spec
 
@@ -43,17 +51,3 @@ HSQLDB is a Java based file/in-memeory DB similar to sqllite.
 Everything is configured using Spring Boot.
 
 When deployed into Elastic Beanstalk in AWS there is a ngix load balancer in front of the application.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
