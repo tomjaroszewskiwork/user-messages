@@ -75,7 +75,7 @@ public class UserMessageApi {
 		if (page < 0) {
 			throw new ClientErrorException("page must be a positive intger", Response.Status.BAD_REQUEST);
 		}
-		if (size < 0 || size > 100) {
+		if (size < 1 || size > 100) {
 			throw new ClientErrorException("size must be between 1 and 100", Response.Status.BAD_REQUEST);
 		}
 
