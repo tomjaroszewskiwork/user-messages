@@ -35,12 +35,12 @@ public class UserMessageRepo {
 	 * 
 	 * @param userId
 	 * @param page
-	 * @param size
+	 * @param buffer
 	 * @return list of user messages
 	 */
-	public List<UserMessageEntity> getMessagesForUser(String userId, int page, int size, int extra) {
+	public List<UserMessageEntity> getMessagesForUser(String userId, int page, int size, int buffer) {
 		int offsetStart = page * size;
-		int offsetEnd = (page + 1) * size + extra;
+		int offsetEnd = (page + 1) * size + buffer;
 		TypedQuery<UserMessageEntity> query = messageStore.createQuery(
 				"SELECT m FROM UserMessageEntity m WHERE m.userId = :userId ORDER BY m.generatedAt DESC",
 				UserMessageEntity.class);
