@@ -23,7 +23,7 @@ public class ApiCallTest {
 	private String fixtureFolder;
 
 	/**
-	 * Setup API calls
+	 * Setup API call for testing
 	 * 
 	 * @param port
 	 * @param fixtureFolder
@@ -36,12 +36,15 @@ public class ApiCallTest {
 	/**
 	 * Calls the URL.
 	 * 
-	 * Compares the API output. Does a lose JSON comparison, extra fields in the
-	 * return will not fail the test.
+	 * Compares the API output response body to the expected file. Tests the HTTP status codes. 
 	 * 
+	 * Does a lose JSON comparison, extra fields in the return will not fail the test.
+	 * 
+	 * @param method 
 	 * @param url
+	 * @param expectedCode 
 	 * @param expectedFile
-	 * @return resonse entity
+	 * @return response from the api
 	 */
 	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, int expectedCode,
 			String expectedFile) {
@@ -51,37 +54,35 @@ public class ApiCallTest {
 	/**
 	 * Calls the URL.
 	 * 
-	 * Tests the HTTP code of the API. Useful for error testing.
+	 * Tests the HTTP status code of the API. Useful for error testing.
 	 * 
+	 * @param method
 	 * @param url
 	 * @param expectedCode
-	 * @return response entity
+	 * @return response from the api
 	 */
 	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, int expectedCode) {
 		return assertURLEquals(method, url, null, expectedCode, null, JSONCompareMode.STRICT_ORDER);
 	}
 
 	/**
-	 * Calls the URL with a body
+	 * Calls the URL with a body.
+	 * 
+	 * Tests the HTTP status code of the API. Useful for error testing.
+	 * 
+	 * @param method 
+	 * @param url 
+	 * @param body 
+	 * @param expectedCode 
+	 * @return response from the api
 	 */
 	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, String body, int expectedCode) {
 		return assertURLEquals(method, url, body, expectedCode, null, JSONCompareMode.STRICT);
 	}
 
-	/**
-	 * Calls the URL
-	 * 
-	 * Checks the expected code, compares the expectedFile (skipped if null) and
-	 * compares using the compareMode.
-	 * 
-	 * @param url
-	 * @param expectedCode
-	 * @param method
-	 * @param expectedFile
-	 * @param compareMode
-	 * @return response entity
-	 */
-	public ResponseEntity<String> assertURLEquals(HttpMethod method, String url, String body, int expectedCode,
+	
+	// Base method for calling the API and doing comparison tests
+	private ResponseEntity<String> assertURLEquals(HttpMethod method, String url, String body, int expectedCode,
 			String expectedFile, JSONCompareMode compareMode) {
 
 		HttpHeaders headers = new HttpHeaders();

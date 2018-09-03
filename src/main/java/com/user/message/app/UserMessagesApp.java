@@ -6,8 +6,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * Run this to start app
+ * Main method for that app, run this to starts
  */
+// Spring boot auto configuration magic
 @SpringBootApplication
 @ComponentScan("com.user.message")
 @EntityScan("com.user.message.store")

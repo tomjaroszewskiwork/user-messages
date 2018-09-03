@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Message wrapper for the POST body
+ * Message wrapper for the POST message body
  */
 @ApiModel(value = "MessageBody", description = "Passed in when creating a new message")
 public class MessageBodyFormatter {

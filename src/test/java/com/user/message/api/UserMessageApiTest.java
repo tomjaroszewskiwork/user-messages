@@ -60,6 +60,7 @@ public class UserMessageApiTest extends ApiTest {
 
 	/**
 	 * Tests adding a message with no body
+	 * @throws Exception 
 	 */
 	@Test
 	public void addMessageBadTest() throws Exception {
@@ -72,6 +73,7 @@ public class UserMessageApiTest extends ApiTest {
 
 	/**
 	 * Tests adding a message
+	 * @throws Exception 
 	 */
 	@Test
 	public void addMessageTest() throws Exception {

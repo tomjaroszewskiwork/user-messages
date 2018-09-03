@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 /**
- * Handles storing and retrieving user messages
+ * API for storing and retrieving user messages
  */
 @Produces(MediaType.APPLICATION_JSON)
 @Component
@@ -64,7 +64,6 @@ public class UserMessageApi {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userId}/messages/")
 	@ApiOperation(value = "Returns a paginated list of user messages, sorted by generation date", response = UserMessageList.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Message not found") })
 	@ETag
 	public Response getMessageList(
 			@ApiParam(value = "User id", example = "bob.dole", required = true) @PathParam("userId") final String userId,

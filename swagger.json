@@ -5,7 +5,7 @@
     "version" : "v1",
     "title" : "User Messages",
     "contact" : {
-      "name" : "usermessagesupport@bestcompany.com"
+      "name" : "tomjaroszewskiwork@gmail.com"
     }
   },
   "tags" : [ {
@@ -53,9 +53,6 @@
             "schema" : {
               "$ref" : "#/definitions/UserMessageList"
             }
-          },
-          "404" : {
-            "description" : "Message not found"
           }
         }
       },

@@ -25,6 +25,9 @@ public class ApiTest extends ApiCallTest {
 	@LocalServerPort
 	private int port;
 
+	/**
+	 * Sets up API for testing
+	 */
 	@Before
 	public void setup() {
 		// The JSON fixtures and test class name will match, except the Test suffix

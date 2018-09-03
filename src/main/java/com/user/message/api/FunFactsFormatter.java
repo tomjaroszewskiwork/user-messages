@@ -13,6 +13,10 @@ public class FunFactsFormatter {
 
 	private String message;
 
+	/**
+	 * Constructor
+	 * @param message entity
+	 */
 	public FunFactsFormatter(UserMessageEntity message) {
 		this.message = message.getMessage();
 	}

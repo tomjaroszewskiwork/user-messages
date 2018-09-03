@@ -10,6 +10,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+/**
+ * Handles storing and retrieving user messages from the database
+ */
 @Transactional
 @Repository
 public class UserMessageRepo {
@@ -18,6 +21,8 @@ public class UserMessageRepo {
 	private EntityManager messageStore;
 
 	/**
+	 * Gets the user message. Returns null if not found or if message does not belong to the given user.
+	 * @param expectedUserId 
 	 * @param messageId
 	 * @return users message
 	 */
@@ -31,10 +36,11 @@ public class UserMessageRepo {
 
 	/**
 	 * Gets a list user messages based on the size and offset, sorted by generation
-	 * date
+	 * date. Page, size and buffer are used to pageinated the results.
 	 * 
 	 * @param userId
 	 * @param page
+	 * @param size 
 	 * @param buffer
 	 * @return list of user messages
 	 */
@@ -55,7 +61,7 @@ public class UserMessageRepo {
 	 * 
 	 * @param userId
 	 * @param messageString
-	 * @return
+	 * @return newly created message entity
 	 */
 	public UserMessageEntity addMessage(String userId, String messageString) {
 		UserMessageEntity newMessage = new UserMessageEntity();
@@ -68,9 +74,10 @@ public class UserMessageRepo {
 	}
 
 	/**
-	 * Removes the message from the store
-	 * 
+	 * Deletes the message from the store. Before deletion makes sure that the message exists and it belongs to the given user.
+	 * @param expectedUserId 
 	 * @param messageId
+	 * @return deleted message entity
 	 */
 	public UserMessageEntity deleteMessage(String expectedUserId, Long messageId) {
 		UserMessageEntity messageToDelete = getMessage(expectedUserId, messageId);

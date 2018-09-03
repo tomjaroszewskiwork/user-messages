@@ -12,6 +12,9 @@ import javax.persistence.Table;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * User message entity and formatter
+ */
 @Entity
 @Table(name = "message", indexes = { @Index(columnList = "userId") })
 @ApiModel(value = "UserMessage", description = "A message for a user")

@@ -7,6 +7,9 @@ import com.user.message.store.UserMessageEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+/**
+ * Wrapper around a lsit of user messages
+ */
 @ApiModel(value = "UserMessageList", description = "A list of user messages")
 public class UserMessageList {
 
