@@ -29,7 +29,7 @@ bootJar {
 
 docker {
     dependsOn build
-    name "${project.group}/${bootJar.baseName}"
+    name "${bootJar.baseName}"
     files bootJar.archivePath
     buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
