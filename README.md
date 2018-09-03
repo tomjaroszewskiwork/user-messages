@@ -6,19 +6,27 @@
 
 Get JDK 1.8
 
+```bash
 ./gradlew build
+```
 
 ## To run jar
 
+```bash
 java -jar ./build/libs/user-messages-1.0.0
+```
 
 ## To build docker image
 
+```bash
 ./gradlew build docker
+```
 
 ## To run docker image
 
+```bash
 docker run -p 8080:8080 user-messages
+```
 
 ## API spec
 
@@ -26,7 +34,7 @@ Default port is 8080.
 
 Sample API call: http://localhost:8080/v1/users/tom.j/messages
 
-Please see swagger.json for full API spec details.
+Please see [swagger.json](https://github.com/tomjaroszewskiwork/user-messages/blob/master/swagger.json) for full API spec details.
 
 ## Architecture Overview
 
@@ -41,19 +49,3 @@ Persistence is provided by Hibernate ORM using HSQLDB as the store.
 HSQLDB is a Java based file/in-memeory DB similar to sqllite.
 
 Everything is configured using Spring Boot.
-
-When deployed into Elastic Beanstalk in AWS there is a ngix load balancer in front of the application.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
