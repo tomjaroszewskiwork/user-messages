@@ -34,7 +34,7 @@ Default port is 8080.
 
 Sample API call: http://localhost:8080/v1/users/tom.j/messages
 
-Please see swagger.json for full API spec details.
+Please see [swagger.json](https://github.com/tomjaroszewskiwork/user-messages/blob/master/swagger.json) for full API spec details.
 
 ## Architecture Overview
 
