@@ -22,11 +22,11 @@ docker run -p 8080:8080 user-messages
 
 ## API spec
 
-Default port is 8080. If need to change see application.properties
+Default port is 8080.
 
 Sample API call: http://localhost:8080/v1/users/tom.j/messages
 
-Please see swagger.json for full spec details
+Please see swagger.json for full API spec details.
 
 ## Architecture Overview
 
@@ -40,17 +40,9 @@ Persistence is provided by Hibernate ORM using HSQLDB as the store.
 
 HSQLDB is a Java based file/in-memeory DB similar to sqllite.
 
-Everying is configured and runs from using Spring Boot.
+Everything is configured using Spring Boot.
 
 When deployed into Elastic Beanstalk in AWS there is a ngix load balancer in front of the application.
-
-### Limitations
-
-Since HSQLDB is file based the app is not scalable currently.
-
-Because we are using an ORM it is simple matter of dropping in the connector for an external SQL database like Postgres.
-
-Further scalability can be achived with read-only replication/sharding on the database layer.
 
 
 
