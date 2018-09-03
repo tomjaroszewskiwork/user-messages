@@ -49,5 +49,3 @@ Persistence is provided by Hibernate ORM using HSQLDB as the store.
 HSQLDB is a Java based file/in-memeory DB similar to sqllite.
 
 Everything is configured using Spring Boot.
-
-When deployed into Elastic Beanstalk in AWS there is a ngix load balancer in front of the application.
