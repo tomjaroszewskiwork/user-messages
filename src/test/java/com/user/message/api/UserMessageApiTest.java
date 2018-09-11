@@ -54,13 +54,14 @@ public class UserMessageApiTest extends ApiTest {
 		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages/", 200, "all-messages");
 		assertURLEquals(HttpMethod.GET, "/v1/users/new.user/messages/", 200, "empty-list");
 		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?page=100", 200, "empty-list");
-		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=4", 200, "partial-list-start");
-		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=1&page=5", 200, "partial-list-end");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=5", 200, "partial-list-start");
+		assertURLEquals(HttpMethod.GET, "/v1/users/tom.j/messages?size=1&page=6", 200, "partial-list-end");
 	}
 
 	/**
 	 * Tests adding a message with no body
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void addMessageBadTest() throws Exception {
@@ -73,7 +74,8 @@ public class UserMessageApiTest extends ApiTest {
 
 	/**
 	 * Tests adding a message
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	public void addMessageTest() throws Exception {

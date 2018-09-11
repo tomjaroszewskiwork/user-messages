@@ -21,8 +21,10 @@ public class UserMessageRepo {
 	private EntityManager messageStore;
 
 	/**
-	 * Gets the user message. Returns null if not found or if message does not belong to the given user.
-	 * @param expectedUserId 
+	 * Gets the user message. Returns null if not found or if message does not
+	 * belong to the given user.
+	 * 
+	 * @param expectedUserId
 	 * @param messageId
 	 * @return users message
 	 */
@@ -40,19 +42,17 @@ public class UserMessageRepo {
 	 * 
 	 * @param userId
 	 * @param page
-	 * @param size 
-	 * @param buffer
-	 * @return list of user messages
+	 * @param size
+	 * @return list of user messages + one extra message if it exists
 	 */
-	public List<UserMessageEntity> getMessagesForUser(String userId, int page, int size, int buffer) {
-		int offsetStart = page * size;
-		int offsetEnd = (page + 1) * size + buffer;
+	public List<UserMessageEntity> getMessagesForUser(String userId, int page, int size) {
+		int offsetStart = page * size - 1;
 		TypedQuery<UserMessageEntity> query = messageStore.createQuery(
 				"SELECT m FROM UserMessageEntity m WHERE m.userId = :userId ORDER BY m.generatedAt DESC",
 				UserMessageEntity.class);
 		query.setParameter("userId", userId);
 		query.setFirstResult(offsetStart);
-		query.setMaxResults(offsetEnd);
+		query.setMaxResults(size + 1);
 		return query.getResultList();
 	}
 
@@ -74,8 +74,10 @@ public class UserMessageRepo {
 	}
 
 	/**
-	 * Deletes the message from the store. Before deletion makes sure that the message exists and it belongs to the given user.
-	 * @param expectedUserId 
+	 * Deletes the message from the store. Before deletion makes sure that the
+	 * message exists and it belongs to the given user.
+	 * 
+	 * @param expectedUserId
 	 * @param messageId
 	 * @return deleted message entity
 	 */

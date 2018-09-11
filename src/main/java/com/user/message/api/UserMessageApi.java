@@ -79,7 +79,7 @@ public class UserMessageApi {
 		}
 
 		// Gets one more extra entity to check if we have more messages
-		List<UserMessageEntity> userMessages = messageRepo.getMessagesForUser(userId, page, size, 1);
+		List<UserMessageEntity> userMessages = messageRepo.getMessagesForUser(userId, page, size);
 		boolean hasMore = false;
 		if (userMessages.size() == size + 1) {
 			hasMore = true;
